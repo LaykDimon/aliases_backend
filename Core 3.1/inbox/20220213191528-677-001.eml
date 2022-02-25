@@ -1,0 +1,61 @@
+Delivered-To: <833285df-e60d-45ab-8272-b94bb21ba430@aliases.online>
+Return-Path: <laykdimon27890@gmail.com>
+Received: from aliases.online ([192.168.203.8])
+	by aliases.online with LMTP
+	id +Kh4ACQ2CWL/agAAjseKyw
+	(envelope-from <laykdimon27890@gmail.com>)
+	for <833285df-e60d-45ab-8272-b94bb21ba430@aliases.online>; Sun, 13 Feb 2022 16:47:32 +0000
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by aliases.online (Postfix) with ESMTP id D71B8109812E
+	for <833285df-e60d-45ab-8272-b94bb21ba430@aliases.online>; Sun, 13 Feb 2022 16:47:29 +0000 (UTC)
+Received: by mail-oo1-f42.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so16696351ooi.2
+        for <833285df-e60d-45ab-8272-b94bb21ba430@aliases.online>; Sun, 13 Feb 2022 08:47:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=U7i4RqNBhn00vKjTmsJnLJtij1ss1RW987WVGHY5tHw=;
+        b=heL23RpuIOHaIqio9XbLIxkxX6tQVtM7MAEgSTZAW+R0q0g1yzNB4zFj3oKojUevJN
+         qJmMUFvGAI/vPNw3YEeqWCpi2ippQOww5Af5CiUT/xHbYBXMTwRpJaCXMx5JD5RVK4Eg
+         PKlMATB+FNuhdzhqrJz5Gao4wg1Vp2nZnUDZhxC/GClnkEz3SNtQjqCY+Wr6v/mcNfsr
+         cHtBLrpKV7uFs5QKrjSFXbUlZG/OHgW8r9chpHx6QNtoq0PLmSH0n5y2/S6fp8fVaW5A
+         ZtP/MDLRBzsOFVXTsP7ufRMI5/AOx/3ldtnhw8UNJi3A1F2exGAi4POCHQxHEvXdW2Nw
+         ZICw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=U7i4RqNBhn00vKjTmsJnLJtij1ss1RW987WVGHY5tHw=;
+        b=h2uX2xl0X9c/yHzTTCCzUJyPKCK15b9OtcgtNpX+UcUpzFGFovfXHsj+bORqJdfXe7
+         EaAoFZWIqBJ4EbM1kyW6SdNzC65FveWNbaAMzTK/MZucHg5E8i2SrrbLo4EcnTIGX/us
+         fwaFcgKNRKImSzFV9LwE+baWpuMKFEc/E+hjX7zB71oherjRVFz3R96uBeHxBgYXI6vB
+         Aucth4CpsEpKj35k/3LmegHHEMn6QG6M5YYhN09Len9DbJ8qn5brVTs8SJXtXVAYwYp/
+         4F+ta2HWL4U+jcAupvusFhpvA7NWfsj11z0SJcKohgjmmMLBFVZ85pd6P3YvjW5HGn49
+         FcyQ==
+X-Gm-Message-State: AOAM531HTz+0DZj7MsZWaPV5AVSMrwNy5T7WkWM/YhvVdkyg3QgeXOqJ
+	nX24wCXpZr89Xf21BN4TO0rqgpynOP0TenIbhQ06oZhx1DYcCQ==
+X-Google-Smtp-Source: ABdhPJw+52v1Dg4Os1NdQ6DlRAIdU5K7seWxTrA8lXMSpsj8VXfmF8cDsou/1jM/iydI0zZwjZEm4arj/MT5t14Bog8=
+X-Received: by 2002:a05:6870:73d5:: with SMTP id a21mr2891619oan.335.1644770847026;
+ Sun, 13 Feb 2022 08:47:27 -0800 (PST)
+MIME-Version: 1.0
+From: Rustam <laykdimon27890@gmail.com>
+Date: Sun, 13 Feb 2022 18:47:15 +0200
+Message-ID: <CA+ezoE5hvRWefDwbJx9mzp2Bu6y7NDCMPkDQ3WXGid5g032JFA@mail.gmail.com>
+Subject: test2
+To: 833285df-e60d-45ab-8272-b94bb21ba430@aliases.online
+Content-Type: multipart/alternative; boundary="00000000000012f35805d7e90e80"
+Authentication-Results: aliases.online;
+	dkim=pass header.d=gmail.com header.s=20210112 header.b=heL23Rpu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (aliases.online: domain of laykdimon27890@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=laykdimon27890@gmail.com
+X-Spamd-Bar: /
+
+--00000000000012f35805d7e90e80
+Content-Type: text/plain; charset="UTF-8"
+
+test2
+
+--00000000000012f35805d7e90e80
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">test2<div><br></div></div>
+
+--00000000000012f35805d7e90e80--
