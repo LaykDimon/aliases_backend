@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SLE_System.Models;
+using System.Diagnostics;
+using Microsoft.Extensions.Hosting.Internal;
+using System.IO;
 
 namespace Core_3._1.Controllers
 {
@@ -40,8 +44,17 @@ namespace Core_3._1.Controllers
 
                 if (result.Succeeded)
                 {
-                    var newEmail = Guid.NewGuid().ToString() + "@aliases.online";
-                    //var newEmail = "833285df-e60d-45ab-8272-b94bb21ba430@aliases.online";
+                    var mailuNewEmail = Guid.NewGuid().ToString();
+                    var newEmail = mailuNewEmail + "@aliases.online";
+                    var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
+                    //mailu registration
+                    Process process = new Process();
+                    process.StartInfo = new ProcessStartInfo(path, mailuNewEmail + ' ' + model.Password)
+                    {
+                        UseShellExecute = true
+                    };
+                    process.Start();
+
                     Job.StartJob(newEmail, model.Password, model.Email);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
