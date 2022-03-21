@@ -54,15 +54,24 @@ namespace Core_3._1.Controllers
                     using (StreamWriter logFile = new StreamWriter(logFileName))
                     {
                         logFile.WriteLine(path);
+                        logFile.WriteLine(mailuNewEmail);
+                        logFile.WriteLine(model.Password);
                     }
 
                     //mailu registration
                     Process process = new Process();
-                    process.StartInfo = new ProcessStartInfo(path, mailuNewEmail + ' ' + model.Password)
-                    {
-                        UseShellExecute = true
-                    };
-                    process.Start();
+
+                    var command = "sh";
+                    var argss = $"{path} {mailuNewEmail} {model.Password}";
+
+                    var processInfo = new ProcessStartInfo();
+                    processInfo.UseShellExecute = false;
+                    processInfo.FileName = command;   // 'sh' for bash 
+                    processInfo.Arguments = argss;    // The Script name 
+
+                    process = Process.Start(processInfo);   // Start that process.
+                    process.WaitForExit();
+
 
                     Job.StartJob(newEmail, model.Password, model.Email);
 

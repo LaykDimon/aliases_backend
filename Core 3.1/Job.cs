@@ -31,7 +31,8 @@ namespace Core_3._1
             {
                 // Create a folder named "inbox" under current directory
                 // to save the email retrieved.
-                string localInbox = string.Format("{0}\\inbox", Directory.GetCurrentDirectory());
+                //string localInbox = string.Format("{0}\\inbox", Directory.GetCurrentDirectory());
+                string localInbox = string.Format("{0}/inbox", Directory.GetCurrentDirectory());
                 // If the folder is not existed, create it.
                 if (!Directory.Exists(localInbox))
                 {
@@ -84,7 +85,8 @@ namespace Core_3._1
 
                         // Generate an unqiue email file name based on date time.
                         string fileName = _generateFileName(i + 1);
-                        string fullPath = string.Format("{0}\\{1}", localInbox, fileName);
+                        //string fullPath = string.Format("{0}\\{1}", localInbox, fileName);
+                        string fullPath = string.Format("{0}/{1}", localInbox, fileName);
 
                         // Save email to local disk
                         oMail.SaveAs(fullPath, true);
