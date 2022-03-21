@@ -47,6 +47,13 @@ namespace Core_3._1.Controllers
                     var mailuNewEmail = Guid.NewGuid().ToString();
                     var newEmail = mailuNewEmail + "@aliases.online";
                     var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
+
+                    var logFileName = Directory.GetCurrentDirectory() + "\\log.txt";
+                    using (StreamWriter logFile = new StreamWriter(logFileName))
+                    {
+                        logFile.WriteLine(path);
+                    }
+
                     //mailu registration
                     Process process = new Process();
                     process.StartInfo = new ProcessStartInfo(path, mailuNewEmail + ' ' + model.Password)
