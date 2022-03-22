@@ -47,7 +47,7 @@ namespace Core_3._1.Controllers
                     var mailuNewEmail = Guid.NewGuid().ToString();
                     var newEmail = mailuNewEmail + "@aliases.online";
                     //var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
-                    var path = Directory.GetCurrentDirectory() + "/shell/mailuScript.sh";
+                    var path = "/mailu/mailuScript.sh";
 
                     //var logFileName = Directory.GetCurrentDirectory() + "\\log.txt";
                     var logFileName = Directory.GetCurrentDirectory() + "/log.txt";
