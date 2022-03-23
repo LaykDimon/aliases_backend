@@ -76,7 +76,7 @@ namespace Core_3._1.Controllers
                     {
                         StartInfo = new ProcessStartInfo
                         {
-                            FileName = "bash",
+                            FileName = "zsh",
                             RedirectStandardInput = true,
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
