@@ -59,7 +59,7 @@ namespace Core_3._1.Controllers
                     }
 
                     //mailu registration
-                    Process process = new Process();
+                    /*Process process = new Process();
 
                     var command = "sh";
                     var argss = $"{path} {mailuNewEmail} {model.Password}";
@@ -70,8 +70,27 @@ namespace Core_3._1.Controllers
                     processInfo.Arguments = argss;    // The Script name 
 
                     process = Process.Start(processInfo);   // Start that process.
-                    process.WaitForExit();
+                    process.WaitForExit();*/
 
+                    Process process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = "bash",
+                            RedirectStandardInput = true,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false
+                        }
+                    };
+                    process.Start();
+                    var args = "cd /mailu && docker-compose exec admin flask mailu user " + mailuNewEmail + " aliases.online " + model.Password + " ; echo priva";
+                    await process.StandardInput.WriteLineAsync(args);
+                    var output = await process.StandardOutput.ReadLineAsync();
+                    using (StreamWriter logFile = new StreamWriter(logFileName))
+                    {
+                        logFile.WriteLine(output);
+                    }
 
                     Job.StartJob(newEmail, model.Password, model.Email);
 
