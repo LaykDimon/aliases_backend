@@ -8,6 +8,7 @@ using SLE_System.Models;
 using System.Diagnostics;
 using Microsoft.Extensions.Hosting.Internal;
 using System.IO;
+using Npgsql;
 
 namespace Core_3._1.Controllers
 {
@@ -44,17 +45,20 @@ namespace Core_3._1.Controllers
 
                 if (result.Succeeded)
                 {
-                    var mailuNewEmail = Guid.NewGuid().ToString();
-                    var newEmail = mailuNewEmail + "@aliases.online";
+                    //var mailuNewEmail = Guid.NewGuid().ToString();
+                    var neededUser = await _userManager.GetUserAsync(HttpContext.User);
+                    var userId = user.Id;
+                    var newEmail = userId + "@aliases.online";
                     //var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
                     var path = "/mailu/mailuScript.sh";
 
                     //var logFileName = Directory.GetCurrentDirectory() + "\\log.txt";
+
                     var logFileName = Directory.GetCurrentDirectory() + "/log.txt";
                     using (StreamWriter logFile = new StreamWriter(logFileName))
                     {
                         logFile.WriteLine(path);
-                        logFile.WriteLine(mailuNewEmail);
+                        logFile.WriteLine(userId);
                         logFile.WriteLine(model.Password);
                     }
 
@@ -84,7 +88,7 @@ namespace Core_3._1.Controllers
                         }
                     };
                     process.Start();
-                    var args = "cd /mailu && docker-compose exec admin flask mailu user " + mailuNewEmail + " aliases.online " + model.Password + " ; echo priva";
+                    var args = "cd /mailu && docker-compose exec admin flask mailu user " + userId + " aliases.online " + model.Password + " ; echo priva";
                     await process.StandardInput.WriteLineAsync(args);
                     var output = await process.StandardOutput.ReadLineAsync();
                     using (StreamWriter logFile = new StreamWriter(logFileName))
