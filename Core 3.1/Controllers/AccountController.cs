@@ -50,7 +50,7 @@ namespace Core_3._1.Controllers
                     var userId = user.Id;
                     var newEmail = userId + "@aliases.online";
                     //var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
-                    var path = "/mailu/mailuScript.sh";
+                    var path = "/backend/shell/mailuScript.sh";
 
                     //var logFileName = Directory.GetCurrentDirectory() + "\\log.txt";
 
@@ -63,20 +63,20 @@ namespace Core_3._1.Controllers
                     }
 
                     //mailu registration
-                    /*Process process = new Process();
+                    Process process = new Process();
 
                     var command = "sh";
-                    var argss = $"{path} {mailuNewEmail} {model.Password}";
+                    var args = $"{path} {userId} {model.Password}";
 
                     var processInfo = new ProcessStartInfo();
                     processInfo.UseShellExecute = false;
                     processInfo.FileName = command;   // 'sh' for bash 
-                    processInfo.Arguments = argss;    // The Script name 
+                    processInfo.Arguments = args;    // The Script name 
 
                     process = Process.Start(processInfo);   // Start that process.
-                    process.WaitForExit();*/
+                    process.WaitForExit();
 
-                    Process process = new Process
+                   /* Process process = new Process
                     {
                         StartInfo = new ProcessStartInfo
                         {
@@ -89,7 +89,7 @@ namespace Core_3._1.Controllers
                     };
                     process.Start();
                     var args = "cd /mailu && docker-compose exec admin flask mailu user " + userId + " aliases.online " + model.Password;
-                    await process.StandardInput.WriteLineAsync(args);
+                    await process.StandardInput.WriteLineAsync(args);*/
                     
 
                     Job.StartJob(newEmail, model.Password, model.Email);
