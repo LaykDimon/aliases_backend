@@ -46,7 +46,7 @@ namespace Core_3._1.Controllers
                 if (result.Succeeded)
                 {
                     //var mailuNewEmail = Guid.NewGuid().ToString();
-                    var neededUser = await _userManager.GetUserAsync(HttpContext.User);
+                    //var neededUser = await _userManager.GetUserAsync(HttpContext.User);
                     var userId = user.Id;
                     var newEmail = userId + "@aliases.online";
                     //var path = Directory.GetCurrentDirectory() + "\\shell\\mailuScript.sh";
@@ -88,13 +88,9 @@ namespace Core_3._1.Controllers
                         }
                     };
                     process.Start();
-                    var args = "cd /mailu && docker-compose exec admin flask mailu user " + userId + " aliases.online " + model.Password + " ; echo priva";
+                    var args = "cd /mailu && docker-compose exec admin flask mailu user " + userId + " aliases.online " + model.Password;
                     await process.StandardInput.WriteLineAsync(args);
-                    var output = await process.StandardOutput.ReadLineAsync();
-                    using (StreamWriter logFile = new StreamWriter(logFileName))
-                    {
-                        logFile.WriteLine(output);
-                    }
+                    
 
                     Job.StartJob(newEmail, model.Password, model.Email);
 
