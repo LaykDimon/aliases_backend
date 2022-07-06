@@ -1,8 +1,89 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> userManager
+
+@{
     ViewData["Title"] = "Home Page";
+
+    var user = await userManager.GetUserAsync(User);
+    var username = user.UserName;
+    var alias = user.Alias;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="center">Inbox of @username</div>
+<div class="center">Alias - @alias@@aliases.website</div>
+
+<html>
+    
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel='stylesheet' type='text/css' href="~/css/style.css">
+    </head>
+
+    <body>
+        
+        
+
+        <div class="main_body">
+            <div class="sidebar">
+                <button class="sidebar_compose">
+                    Send email
+                </button>
+
+                <div class="sidebarOption sidebarOption_active">
+                    <h3>Inbox</h3>
+                </div>
+
+                <form method="post" asp-controller="Account" asp-action="Delete">
+                        <input style="visibility: hidden;" id="id" name="id" value="@user.Id"/>
+                        <input type="submit" value="Delete user" class="btn btn-link"/>
+                </form>
+
+            </div>
+
+
+            <div class="emailList">
+
+                
+
+
+                <div class="emailList_sections">
+
+                    <div class="section section_selected">
+                        <h4>Main</h4>
+                    </div>
+
+                    
+
+                </div>
+
+
+                <div class="emailList_list">
+
+                    <div class="emailRow">
+
+                        
+                        <h3 class="emailRow_title">Twitter</h3>
+
+                        <div class="emailRow_message">
+                            <h4>
+                                You got a new message
+                                <span class="emailRow_description"> - on your account Dmitry</span>
+                            </h4>
+                        </div>
+
+                        <p class="emailRow_time">10pm</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+</html>

@@ -22,12 +22,12 @@ namespace Core_3._1
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("default");
-            services.AddDbContext<AppDBContext>(c => c.UseNpgsql(connectionString));
+            services.AddDbContext<AppDBContext>(_options => _options.UseNpgsql(connectionString));
 
             //services.AddIdentity<IdentityUser, IdentityRole<long>>()
             //    .AddEntityFrameworkStores<AppDBContext, long>()
             //    .AddDefaultTokenProviders();
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
             services.ConfigureApplicationCookie(options =>
             {

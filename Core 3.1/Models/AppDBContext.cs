@@ -11,7 +11,8 @@ namespace Core_3._1.Models
     public class AppDBContext : IdentityDbContext
     {
         private readonly DbContextOptions _options;
-
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<DomainAlias> DomainAliases { get; set; }
         public AppDBContext(DbContextOptions options): base(options)
         {
             _options = options; 

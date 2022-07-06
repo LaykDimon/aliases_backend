@@ -6,8 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EAGetMail" Version="5.2.2.3" />
     <PackageReference Include="EASendMail" Version="7.8.0.2" />
+    <PackageReference Include="MailKit" Version="3.3.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
@@ -17,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
+    <PackageReference Include="OpenPOP.Net" Version="2.0.6.1120" />
   </ItemGroup>
 
   <ItemGroup>

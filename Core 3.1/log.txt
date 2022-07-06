@@ -1,3 +1,3 @@
-/mailu/mailuScript.sh
-db893b88-9428-4dfc-81db-b097e39002ee
+/backend/shell/mailuScript.sh
+c65c5bdb-6031-4873-a6bd-6e228f18b61e
 Qwertyuiop1!

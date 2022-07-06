@@ -1,0 +1,32 @@
+﻿@using Core_3._1.Models;
+@model IEnumerable<DomainAlias>
+
+@{
+    ViewData["Title"] = "Aliases";
+    
+}
+<h1>@ViewData["Title"]</h1>
+
+<h4>Domain aliases</h4>
+    <hr/>
+    <table cellpadding="1" cellspacing="1">
+        <tr>
+            <th>Domain</th>
+            <th>Email</th>
+        </tr>
+        @foreach (DomainAlias domainAlias in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => domainAlias.Domain)</td>
+                <td>@Html.DisplayFor(modelItem => domainAlias.Email)</td>
+                <td>
+                    <form method="post" asp-controller="Home" asp-action="Delete">
+                        <input style="visibility: hidden;" id="id" name="id" value="@domainAlias.Id"/>
+                        <input type="submit" value="Delete" class="btn btn-link"/>
+                    </form>
+                </td>
+            </tr>
+
+            
+        }
+    </table>

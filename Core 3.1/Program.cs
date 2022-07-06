@@ -15,6 +15,7 @@ namespace Core_3._1
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    //webBuilder.UseUrls("http://0.0.0.0:5000");
                 });
     }
 }

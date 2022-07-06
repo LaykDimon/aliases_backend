@@ -1,162 +1,93 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using EAGetMail;
-using EASendMail;
+using MailKit;
+using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
+using MailKit.Search;
+using MailKit.Security;
+using MimeKit;
 
 namespace Core_3._1
 {
     public class Job
     {
-        const string AdminEmail = "layk.taviskaron3@gmail.com";
-        const string AdminPwd = "moWTfplRf8x0";
-        const string ServerAddress = "imap.gmail.com";
-        const string RealAddress = "layk.taviskaron@gmail.com";
-
-        // Generate an unqiue email file name based on date time
-        static string _generateFileName(int sequence)
-        {
-            DateTime currentDateTime = DateTime.Now;
-            return string.Format("{0}-{1:000}-{2:000}.eml",
-                currentDateTime.ToString("yyyyMMddHHmmss", new CultureInfo("en-US")),
-                currentDateTime.Millisecond,
-                sequence);
-        }
-
+        const string AdminEmail = "admin@aliases.website";
+        const string AdminPwd = "admin";
+        const string ServerAddress = "mail.aliases.website";
+        const string RealAddress = "laykdimon278@gmail.com";
 
         public static void StartJob(string inputEmail, string inputPassword, string receiverEmail)
         {
             try
             {
-                // Create a folder named "inbox" under current directory
-                // to save the email retrieved.
-                //string localInbox = string.Format("{0}\\inbox", Directory.GetCurrentDirectory());
-                string localInbox = string.Format("{0}/inbox", Directory.GetCurrentDirectory());
-                // If the folder is not existed, create it.
-                if (!Directory.Exists(localInbox))
+                using (var client = new ImapClient())
                 {
-                    Directory.CreateDirectory(localInbox);
-                }
+                    // Note: depending on your server, you might need to connect
+                    // on port 993 using SecureSocketOptions.SslOnConnect
+                    client.Connect(ServerAddress, 143, SecureSocketOptions.StartTls);
 
-                // Gmail IMAP4 server is "imap.gmail.com"
-                MailServer oServer = new MailServer("aliases.online",
-                                inputEmail ?? AdminEmail,
-                                inputPassword ?? AdminPwd,
-                                EAGetMail.ServerProtocol.Imap4);
+                    // Note: use your real username/password here...
+                    client.Authenticate(inputEmail, inputPassword);
 
-                // Enable SSL connection.
-                oServer.SSLConnection = true;
+                    // open the Inbox folder...
+                    client.Inbox.Open(FolderAccess.ReadWrite);
 
-                // Set 993 SSL port
-                oServer.Port = 993;
+                    // search the folder for new messages (aka recently
+                    // delivered messages that have not been read yet)
+                    /*var uids = client.Inbox.Search(SearchQuery.New);
 
-                MailClient oClient = new MailClient("TryIt");
-                oClient.Connect(oServer);
+                    Console.WriteLine("You have {0} new message(s).", uids.Count);*/
 
-                var sentDate = DateTime.Now.AddDays(-40);
-                while (true)
-                {
-                    MailInfo[] infos = oClient.GetMailInfos()
-                        .Where(x => !x.Read)
-                        .ToArray();
+                    // ...but maybe you mean unread messages? if so, use this query
 
-                    Console.WriteLine("Total {0} email(s)\r\n", infos.Length);
+                    var uids = client.Inbox.Search(SearchQuery.NotSeen);
 
-                    for (int i = 0; i < infos.Length; i++)
+                    foreach (var uid in uids)
                     {
-                        MailInfo info = infos[i];
-                        Console.WriteLine("Index: {0}; Size: {1}; UIDL: {2}",
-                            info.Index, info.Size, info.UIDL);
-
-                        // Receive email from IMAP4 server
-                        Mail oMail = oClient.GetMail(info);
-                        if (oMail.SentDate <= sentDate)
-                        {
-                            continue; // this email was already synchronized
-                        }
-
-                        sentDate = oMail.SentDate;
-
-                        SendEmail(oMail, receiverEmail);
-
-                        Console.WriteLine("From: {0}", oMail.From.ToString());
-                        Console.WriteLine("Subject: {0}\r\n", oMail.Subject);
-
-                        // Generate an unqiue email file name based on date time.
-                        string fileName = _generateFileName(i + 1);
-                        //string fullPath = string.Format("{0}\\{1}", localInbox, fileName);
-                        string fullPath = string.Format("{0}/{1}", localInbox, fileName);
-
-                        // Save email to local disk
-                        oMail.SaveAs(fullPath, true);
-
-                        // Mark email as deleted from IMAP4 server.
-                        oClient.Delete(info);
+                        var message = client.Inbox.GetMessage(uid);
+                        Console.WriteLine(message);
                     }
 
+                    Console.WriteLine("You have {0} unread message(s).", uids.Count);
+
+                    client.Inbox.AddFlags(uids, MessageFlags.Seen, true);
+
+                    Console.WriteLine("Now you have {0} unread message(s).", uids.Count);
+
+                    using (var smtpClient = new SmtpClient())
+                    {
+                        smtpClient.Connect(ServerAddress, 465, true);
+                        smtpClient.Authenticate(inputEmail, inputPassword);
+
+                        var sender = new MailboxAddress(inputEmail, inputEmail);
+                        var recipients = new[] { new MailboxAddress(receiverEmail, receiverEmail) };
+
+                        // This version of the Send() method uses the supplied sender and
+                        // recipients rather than getting them from the message's headers.
+
+                        foreach (var uid in uids)
+                        {
+                            var message = client.Inbox.GetMessage(uid);
+                            smtpClient.Send(message, sender, recipients);
+                        }
+
+                        smtpClient.Disconnect(true);
+                    }
+
+                    client.Disconnect(true);
+
                 }
 
-                // Quit and expunge emails marked as deleted from IMAP4 server.
-                oClient.Quit();
-                Console.WriteLine("Completed!");
+
             }
             catch (Exception ep)
             {
                 Console.WriteLine(ep.Message);
             }
-        }
 
-        private static void SendEmail(Mail inputMail, string receiverEmail)
-        {
-            try
-            {
-                SmtpMail oMail = new SmtpMail("TryIt");
-
-                oMail.From = new EASendMail.MailAddress(inputMail.From.Address)
-                {
-                    Additional = inputMail.From.Additional,
-                    Name = inputMail.From.Name
-                };
-
-                // Set recipient email address, please change it to yours
-                oMail.To = receiverEmail ?? RealAddress;
-
-                // Set email subject
-                oMail.Subject = inputMail.Subject;
-                // Set email body
-                oMail.TextBody = inputMail.TextBody;
-
-                // SMTP server address
-                SmtpServer oServer = new SmtpServer(ServerAddress);
-
-                // User and password for ESMTP authentication
-                oServer.User = AdminEmail;
-                oServer.Password = AdminPwd;
-
-                // Most mordern SMTP servers require SSL/TLS connection now.
-                // ConnectTryTLS means if server supports SSL/TLS, SSL/TLS will be used automatically.
-                oServer.ConnectType = SmtpConnectType.ConnectTryTLS;
-
-                // If your SMTP server uses 587 port
-                oServer.Port = 587;
-
-                // If your SMTP server requires SSL/TLS connection on 25/587/465 port
-                // oServer.Port = 25; // 25 or 587 or 465
-                // oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
-
-                Console.WriteLine("start to send email ...");
-
-                SmtpClient oSmtp = new SmtpClient();
-                oSmtp.SendMail(oServer, oMail);
-
-                Console.WriteLine("email was sent successfully!");
-            }
-            catch (Exception ep)
-            {
-                Console.WriteLine("failed to send email with the following error:");
-                Console.WriteLine(ep.Message);
-            }
         }
 
     }

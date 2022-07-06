@@ -1,6 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿@using Core_3._1.Models;
+@model Core_3._1.ViewModel.AliasCreationViewModel
+
+@{
+    ViewData["Title"] = "Alais Creation";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+<div class="row">
+    
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Domain"></label>
+                <input asp-for="Domain" class="form-control" />
+                <span asp-validation-for="Domain" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn-primary">Create alias</button>
+        </form>
+
+    </div>
+
+
+</div>
